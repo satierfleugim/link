@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Site com Cartas Externas</title>
+  <style>
+    /* Estilos gerais do site */
+    html, body {
+      margin: 0;
+      background-color: #E3EED4;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px 0;
+      min-height: 100vh;
+    }
+
+    .overlay-background {
+      width: 95vw;
+      max-width: 500px;
+      background-color: #6B9071;
+      border-radius: 40px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      padding: 12px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background-color: #E3EED4;
+      width: 80%;
+      max-width: 500px;
+      color: #0F2A1D;
+    }
+
+    .search-box::placeholder {
+      color: #2A114B;
+      opacity: 0.7;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .card {
+      background-color: #E3EED4;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-text {
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      color: black;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-text a {
+      color: black;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .profile-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 4px solid #E3EED4;
+      object-fit: cover;
+    }
+
+    .welcome-text {
+      color: #E3EED4;
+      font-size: 28px;
+      font-weight: bold;
+      max-width: calc(95vw - 140px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="overlay-background">
+
+    <!-- Aqui será carregado o conteúdo do arquivo perfil.html -->
+    <div id="perfil-container"></div>
+
+    <!-- Campo de busca -->
+    <div class="search-container">
+      <input type="text" id="searchInput" class="search-box" placeholder="Procurar por..." />
+    </div>
+
+    <!-- Aqui serão carregadas as cartas do arquivo cartas.html -->
+    <div class="cards-grid" id="cardsGrid"></div>
+
+  </div>
+
+  <script>
+    // Carrega o conteúdo de perfil.html e insere no container
+    fetch("perfil.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("perfil-container").innerHTML = html;
+      });
+
+    // Carrega o conteúdo de cartas.html e insere no container
+    fetch("cartas.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("cardsGrid").innerHTML = html;
+      });
+
+    // Filtra as cartas ao digitar
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const termo = searchInput.value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const titulo = card.getAttribute('data-title');
+        card.style.display = titulo.includes(termo) ? 'flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
